@@ -1,0 +1,29 @@
+table {
+  width: 100%;
+}
+.deleteButton {
+  padding-right: 3px;
+  padding-left: 3px;
+  --color-hover: red;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+.changeTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  float: left;
+}
+
+.changeColumn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  float: right;
+}
