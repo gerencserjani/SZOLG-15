@@ -1,48 +1,61 @@
 <ion-content>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-    <ng-container
-      [matColumnDef]="column"
-      *ngFor="let column of displayedColumns"
+  <div [ngClass]="{ 'dark-theme': isThemeDark | async }">
+    <mat-slide-toggle
+      [checked]="isThemeDark | async"
+      (change)="toggleDarkTheme($event.checked)"
+    ></mat-slide-toggle>
+    <table
+      rz-table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="mat-elevation-z8"
     >
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        <ion-icon
-          color="primary"
-          class="deleteButton"
-          name="close-circle"
-          (click)="deleteColumn(column)"
-        >
-        </ion-icon>
-        {{ column }}
-      </th>
-
-      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-  <mat-paginator
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons
-  ></mat-paginator>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Columns to add</mat-label>
-    <mat-select>
-      <mat-option
-        *ngFor="let delColumn of deletedColumns"
-        [value]="delColumn"
-        (onSelectionChange)="addColumn($event)"
+      <ng-container
+        [matColumnDef]="column"
+        *ngFor="let column of displayedColumns"
       >
-        {{ delColumn }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <ion-icon
+            color="primary"
+            class="deleteButton"
+            name="close-circle"
+            (click)="deleteColumn(column)"
+          >
+          </ion-icon>
+          {{ column }}
+        </th>
 
-  <ion-list>
-    <ion-item>
-      <ion-input [(ngModel)]="collectionName"></ion-input>
-      <ion-button (click)="changeCollection()">Change collection</ion-button>
-    </ion-item>
-  </ion-list>
+        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Columns to add</mat-label>
+      <mat-select>
+        <mat-option
+          *ngFor="let delColumn of deletedColumns"
+          [value]="delColumn"
+          (onSelectionChange)="addColumn($event)"
+        >
+          {{ delColumn }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <ion-list>
+      <ion-item>
+        <ion-input [(ngModel)]="collectionName"></ion-input>
+        <ion-button (click)="changeCollection()">Change collection</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

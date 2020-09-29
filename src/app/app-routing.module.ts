@@ -12,20 +12,6 @@ const routes: Routes = [
     path: "datatable",
     component: DataTableComponent,
   },
-  {
-    path: "selectTable",
-    loadChildren: () =>
-      import("./data-table/select-table/select-table.module").then(
-        (m) => m.SelectTablePageModule
-      ),
-  },
-  {
-    path: "addColumn",
-    loadChildren: () =>
-      import("./data-table/add-column/add-column.module").then(
-        (m) => m.AddColumnPageModule
-      ),
-  },
 ];
 
 @NgModule({

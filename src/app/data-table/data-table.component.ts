@@ -1,10 +1,19 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  Renderer2,
+} from "@angular/core";
 import { TableServiceService } from "./table-service.service";
 import { AfterViewInit, ViewChild } from "@angular/core";
 import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { getLocaleDateFormat } from "@angular/common";
 import { MatPaginator } from "@angular/material/paginator";
+import { ThemeService } from "../services/theme.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-data-table",
@@ -12,14 +21,29 @@ import { MatPaginator } from "@angular/material/paginator";
   styleUrls: ["./data-table.component.scss"],
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatTable, { read: ElementRef }) private matTableRef: ElementRef;
+  storedTheme: string = localStorage.getItem("theme-color");
   tableData;
   public dataSource;
   displayedColumns: string[];
   columnTitles = [];
   deletedColumns = [];
   collectionName = "test";
+  isThemeDark: Observable<boolean>;
 
-  constructor(public tableService: TableServiceService) {}
+  pressed = false;
+  currentResizeIndex: number;
+  startX: number;
+  startWidth: number;
+  isResizingRight: boolean;
+  resizableMousemove: () => void;
+  resizableMouseup: () => void;
+
+  constructor(
+    public tableService: TableServiceService,
+    private themeService: ThemeService,
+    private renderer: Renderer2
+  ) {}
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   ngOnInit() {
@@ -31,8 +55,9 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
+    this.isThemeDark = this.themeService.isThemeDark;
   }
-
+  ngAfterViewInit() {}
   deleteColumn(column) {
     this.displayedColumns = this.displayedColumns.filter((c) => {
       return c != column;
@@ -54,6 +79,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     this.tableService.setCollectionName(this.collectionName);
     this.ngOnInit();
   }
-
-  ngAfterViewInit() {}
+  toggleDarkTheme(checked: boolean) {
+    this.themeService.setDarkTheme(checked);
+  }
 }
