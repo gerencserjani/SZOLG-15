@@ -1,7 +1,5 @@
 @import "./src/assets/styles/material-theme.scss";
-table {
-  width: 100%;
-}
+
 .deleteButton {
   padding-right: 3px;
   padding-left: 3px;
@@ -11,4 +9,156 @@ table {
 body {
   margin: 0px;
   padding: 0px;
+}
+.mat-header-cell {
+  align-items: center;
+  text-align: center;
+  > span {
+    align-items: center;
+    text-align: center;
+  }
+}
+#sort-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-right: 8px;
+}
+.mat-table {
+  width: 100%;
+  &.resizing {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: col-resize;
+  }
+  .mat-cell {
+    text-align: center;
+    span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
+  }
+  .mat-header-cell {
+    position: relative;
+    &:not(:last-child) {
+      .resize-holder {
+        cursor: col-resize;
+        width: 5px;
+        height: 100%;
+        position: absolute;
+        right: -1px;
+        top: 0;
+        z-index: 1;
+      }
+    }
+  }
+  .mat-cell,
+  .mat-header-cell {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    &:not(:nth-child(1)) {
+      padding: 0 0px;
+      text-align: center;
+    }
+  }
+}
+
+/* PopUp window styling*/
+
+.user-menu {
+  background-color: #fafafa;
+  padding: 4pt;
+  font-size: 10pt;
+  z-index: 1000;
+  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
+  border-radius: 4pt;
+  padding: 0.5em 0 0.5em 0;
+  animation: fadeIn 0.1s ease-out;
+  opacity: 1;
+  display: block;
+}
+
+.user-menu hr {
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+.user-menu div {
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: #333;
+  padding: 0.5em 2em 0.5em 0.75em;
+  max-width: 18em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu div:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.user-menu div::before {
+  content: "";
+  float: left;
+  margin-right: 0.75em;
+  width: 0.5em;
+  height: 1em;
+  display: inline-block;
+}
+
+/* Animatinons */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.is-fadingIn {
+  -webkit-animation: fadeIn 0.1s ease-out;
+  animation: fadeIn 0.1s ease-out;
+  opacity: 1;
+  display: block;
+}
+
+.is-fadingOut {
+  -webkit-animation: fadeOut 0.1s ease-out;
+  animation: fadeOut 0.1s ease-out;
+  opacity: 0;
+  display: block;
 }

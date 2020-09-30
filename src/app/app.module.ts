@@ -1,3 +1,4 @@
+import "zone.js/dist/zone";
 import { TesztComponent } from "./teszt/teszt.component";
 import { DataTableComponent } from "./data-table/data-table.component";
 import { environment } from "./../environments/environment";
@@ -27,19 +28,35 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { CommonModule } from "@angular/common";
+import { DragDropModule } from "@angular/cdk/drag-drop";
+
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { CdkStepperModule } from "@angular/cdk/stepper";
+import { CdkTableModule } from "@angular/cdk/table";
+import { CdkTreeModule } from "@angular/cdk/tree";
+import { ResizeColumnDirective } from "../app/data-table/resize-column.directive";
 
 @NgModule({
-  declarations: [AppComponent, TesztComponent, DataTableComponent],
+  exports: [CdkStepperModule, CdkTableModule, CdkTreeModule],
+  declarations: [
+    AppComponent,
+    TesztComponent,
+    DataTableComponent,
+    ResizeColumnDirective,
+  ],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
+    DragDropModule,
     MatSlideToggleModule,
     MatIconModule,
     MatMenuModule,
     BrowserAnimationsModule,
+    CommonModule,
     FormsModule,
     HttpClientModule,
     MatPaginatorModule,
@@ -56,6 +73,10 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: "fill" },
+    },
     TableServiceService,
   ],
   bootstrap: [AppComponent],

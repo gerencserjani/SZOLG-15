@@ -5,6 +5,8 @@ import {
   Input,
   OnInit,
   Renderer2,
+  TemplateRef,
+  ViewContainerRef,
 } from "@angular/core";
 import { TableServiceService } from "./table-service.service";
 import { AfterViewInit, ViewChild } from "@angular/core";
@@ -13,7 +15,10 @@ import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { getLocaleDateFormat } from "@angular/common";
 import { MatPaginator } from "@angular/material/paginator";
 import { ThemeService } from "../services/theme.service";
-import { Observable } from "rxjs";
+import { fromEvent, Observable, Subscription } from "rxjs";
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
+import { TemplatePortal } from "@angular/cdk/portal";
+import { filter, take } from "rxjs/operators";
 
 @Component({
   selector: "app-data-table",
@@ -31,19 +36,18 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   collectionName = "test";
   isThemeDark: Observable<boolean>;
 
-  pressed = false;
-  currentResizeIndex: number;
-  startX: number;
-  startWidth: number;
-  isResizingRight: boolean;
-  resizableMousemove: () => void;
-  resizableMouseup: () => void;
+  sub: Subscription;
+  @ViewChild("userMenu") userMenu: TemplateRef<any>;
+  overlayRef: OverlayRef | null;
 
   constructor(
     public tableService: TableServiceService,
     private themeService: ThemeService,
-    private renderer: Renderer2
+    public overlay: Overlay,
+    public viewContainerRef: ViewContainerRef
   ) {}
+
+  ngAfterViewInit(): void {}
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   ngOnInit() {
@@ -57,7 +61,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     });
     this.isThemeDark = this.themeService.isThemeDark;
   }
-  ngAfterViewInit() {}
+
   deleteColumn(column) {
     this.displayedColumns = this.displayedColumns.filter((c) => {
       return c != column;
@@ -79,7 +83,63 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     this.tableService.setCollectionName(this.collectionName);
     this.ngOnInit();
   }
+
+  /* Dark-light Theme changing */
   toggleDarkTheme(checked: boolean) {
     this.themeService.setDarkTheme(checked);
+  }
+
+  /* PopUp Menu */
+
+  open({ x, y }: MouseEvent, user) {
+    this.close();
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo({ x, y })
+      .withPositions([
+        {
+          originX: "end",
+          originY: "bottom",
+          overlayX: "end",
+          overlayY: "top",
+        },
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close(),
+    });
+
+    this.overlayRef.attach(
+      new TemplatePortal(this.userMenu, this.viewContainerRef, {
+        $implicit: user,
+      })
+    );
+
+    this.sub = fromEvent<MouseEvent>(document, "click")
+      .pipe(
+        filter((event) => {
+          const clickTarget = event.target as HTMLElement;
+          return (
+            !!this.overlayRef &&
+            !this.overlayRef.overlayElement.contains(clickTarget)
+          );
+        }),
+        take(1)
+      )
+      .subscribe(() => this.close());
+  }
+
+  delete(user) {
+    // delete user
+    this.close();
+  }
+
+  close() {
+    this.sub && this.sub.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
   }
 }
