@@ -11,6 +11,9 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 // Our dark theme
 .dark-theme {
+  ::ng-deep .mat-sort-header-arrow {
+    color: yellow;
+  }
   color: $light-primary-text;
   $dark-primary: mat-palette($mat-yellow);
   $dark-accent: mat-palette($mat-amber, A400, A100, A700);

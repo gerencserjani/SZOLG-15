@@ -62,12 +62,6 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     this.isThemeDark = this.themeService.isThemeDark;
   }
 
-  deleteColumn(column) {
-    this.displayedColumns = this.displayedColumns.filter((c) => {
-      return c != column;
-    });
-    this.deletedColumns.push(column);
-  }
   addColumn(delColumn) {
     if (delColumn.isUserInput == false) {
       return;
@@ -91,7 +85,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
   /* PopUp Menu */
 
-  open({ x, y }: MouseEvent, user) {
+  open({ x, y }: MouseEvent, column) {
     this.close();
     const positionStrategy = this.overlay
       .position()
@@ -112,7 +106,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
     this.overlayRef.attach(
       new TemplatePortal(this.userMenu, this.viewContainerRef, {
-        $implicit: user,
+        $implicit: column,
       })
     );
 
@@ -130,8 +124,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       .subscribe(() => this.close());
   }
 
-  delete(user) {
-    // delete user
+  delete(column) {
+    this.displayedColumns = this.displayedColumns.filter((c) => {
+      return c != column;
+    });
+    this.deletedColumns.push(column);
+
     this.close();
   }
 

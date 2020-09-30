@@ -36,6 +36,7 @@ import { CdkStepperModule } from "@angular/cdk/stepper";
 import { CdkTableModule } from "@angular/cdk/table";
 import { CdkTreeModule } from "@angular/cdk/tree";
 import { ResizeColumnDirective } from "../app/data-table/resize-column.directive";
+import { MatListModule } from "@angular/material/list";
 
 @NgModule({
   exports: [CdkStepperModule, CdkTableModule, CdkTreeModule],
@@ -51,6 +52,7 @@ import { ResizeColumnDirective } from "../app/data-table/resize-column.directive
     IonicModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
+    MatListModule,
     DragDropModule,
     MatSlideToggleModule,
     MatIconModule,

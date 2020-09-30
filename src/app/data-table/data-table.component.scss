@@ -10,6 +10,11 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
+::ng-deep .mat-sort-header-arrow {
+  color: blue;
+}
+
 .mat-header-cell {
   align-items: center;
   text-align: center;
