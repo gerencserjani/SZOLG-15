@@ -31,15 +31,18 @@
 
     <ng-template #userMenu let-user *ngFor="let column of displayedColumns">
       <section class="user-menu">
-        <div (click)="delete(column)">Delete</div>
-        <div>
-          Add column
-          <div
+        <div (click)="delete(column)">Remove column</div>
+        <div class="insert-column">
+          Insert column
+
+          <mat-option
+            class="options"
             *ngFor="let delColumn of deletedColumns"
-            (click)="addColumn($event)"
+            [value]="delColumn"
+            (onSelectionChange)="addColumn($event)"
           >
             {{ delColumn }}
-          </div>
+          </mat-option>
         </div>
       </section>
     </ng-template>
@@ -48,7 +51,9 @@
       [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
     ></mat-paginator>
+    <!---->
 
+    <!--
     <mat-form-field appearance="fill">
       <mat-label>Columns to add</mat-label>
       <mat-select>
@@ -61,7 +66,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
+-->
     <ion-list>
       <ion-item>
         <ion-input [(ngModel)]="collectionName"></ion-input>

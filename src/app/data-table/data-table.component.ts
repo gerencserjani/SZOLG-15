@@ -19,6 +19,14 @@ import { fromEvent, Observable, Subscription } from "rxjs";
 import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { TemplatePortal } from "@angular/cdk/portal";
 import { filter, take } from "rxjs/operators";
+import { MenuItemModel } from "@syncfusion/ej2-navigations";
+import { MenuEventArgs } from "@syncfusion/ej2-angular-navigations";
+import {
+  ContextMenu,
+  BeforeOpenCloseMenuEventArgs,
+} from "@syncfusion/ej2-navigations";
+import { createCheckBox } from "@syncfusion/ej2-buttons";
+import { closest } from "@syncfusion/ej2-base";
 
 @Component({
   selector: "app-data-table",

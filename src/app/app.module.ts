@@ -37,6 +37,11 @@ import { CdkTableModule } from "@angular/cdk/table";
 import { CdkTreeModule } from "@angular/cdk/tree";
 import { ResizeColumnDirective } from "../app/data-table/resize-column.directive";
 import { MatListModule } from "@angular/material/list";
+import { ContextMenuModule } from "@syncfusion/ej2-angular-navigations";
+import { enableRipple } from "@syncfusion/ej2-base";
+import { IgxDropDownModule } from "igniteui-angular";
+import { MatButtonModule } from "@angular/material/button";
+enableRipple(true);
 
 @NgModule({
   exports: [CdkStepperModule, CdkTableModule, CdkTreeModule],
@@ -52,6 +57,9 @@ import { MatListModule } from "@angular/material/list";
     IonicModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
+    MatButtonModule,
+    IgxDropDownModule,
+    ContextMenuModule,
     MatListModule,
     DragDropModule,
     MatSlideToggleModule,
