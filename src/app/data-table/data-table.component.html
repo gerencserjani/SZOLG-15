@@ -4,7 +4,13 @@
       [checked]="isThemeDark | async"
       (change)="toggleDarkTheme($event.checked)"
     ></mat-slide-toggle>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table
+      mat-table
+      #Table
+      [dataSource]="dataSource"
+      matSort
+      class="mat-elevation-z8"
+    >
       <ng-container
         *ngFor="let column of displayedColumns; let i = index"
         [matColumnDef]="column"
@@ -14,14 +20,14 @@
           *matHeaderCellDef
           [resizeColumn]="true"
           [index]="i"
-          (contextmenu)="open($event, column); $event.preventDefault()"
+          (contextmenu)="onContextMenu($event, column); $event.preventDefault()"
         >
-          <span>
-            <mat-label id="sort-icon" mat-sort-header></mat-label>
-            {{ column }}
-          </span>
+          <mat-label id="sort-icon" mat-sort-header>
+            <div id="basicColumns">
+              {{ column }}
+            </div>
+          </mat-label>
         </th>
-
         <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
       </ng-container>
 
@@ -29,44 +35,49 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <ng-template #userMenu let-user *ngFor="let column of displayedColumns">
-      <section class="user-menu">
-        <div (click)="delete(column)">Remove column</div>
-        <div class="insert-column">
-          Insert column
+    <div
+      style="visibility: hidden; position: fixed"
+      [style.left]="contextMenuPosition.x"
+      [style.top]="contextMenuPosition.y"
+      [matMenuTriggerFor]="contextMenu"
+    ></div>
 
-          <mat-option
-            class="options"
-            *ngFor="let delColumn of deletedColumns"
-            [value]="delColumn"
-            (onSelectionChange)="addColumn($event)"
-          >
-            {{ delColumn }}
-          </mat-option>
-        </div>
-      </section>
-    </ng-template>
+    <mat-menu #contextMenu="matMenu">
+      <ng-template
+        *ngFor="let column of displayedColumns"
+        matMenuContent
+        let-column="column"
+      >
+        <button
+          mat-menu-item
+          (click)="delete(column)"
+          [disabled]="this.displayedColumns.length <= 1"
+        >
+          Remove Column
+        </button>
+        <button
+          mat-menu-item
+          [matMenuTriggerFor]="deletedColumn"
+          [disabled]="this.deletedColumns.length == 0"
+        >
+          Insert Column
+        </button>
+      </ng-template>
+    </mat-menu>
+    <mat-menu #deletedColumn="matMenu">
+      <button
+        mat-menu-item
+        *ngFor="let delColumn of deletedColumns"
+        (click)="addColumn(delColumn)"
+      >
+        {{ delColumn }}
+      </button>
+    </mat-menu>
 
     <mat-paginator
       [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
     ></mat-paginator>
-    <!---->
-
-    <!--
-    <mat-form-field appearance="fill">
-      <mat-label>Columns to add</mat-label>
-      <mat-select>
-        <mat-option
-          *ngFor="let delColumn of deletedColumns"
-          [value]="delColumn"
-          (onSelectionChange)="addColumn($event)"
-        >
-          {{ delColumn }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
--->
     <ion-list>
       <ion-item>
         <ion-input [(ngModel)]="collectionName"></ion-input>

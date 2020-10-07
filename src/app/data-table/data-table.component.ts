@@ -20,13 +20,14 @@ import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { TemplatePortal } from "@angular/cdk/portal";
 import { filter, take } from "rxjs/operators";
 import { MenuItemModel } from "@syncfusion/ej2-navigations";
-import { MenuEventArgs } from "@syncfusion/ej2-angular-navigations";
+import { Item, MenuEventArgs } from "@syncfusion/ej2-angular-navigations";
 import {
   ContextMenu,
   BeforeOpenCloseMenuEventArgs,
 } from "@syncfusion/ej2-navigations";
 import { createCheckBox } from "@syncfusion/ej2-buttons";
 import { closest } from "@syncfusion/ej2-base";
+import { MatMenuTrigger } from "@angular/material/menu";
 
 @Component({
   selector: "app-data-table",
@@ -70,17 +71,6 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     this.isThemeDark = this.themeService.isThemeDark;
   }
 
-  addColumn(delColumn) {
-    if (delColumn.isUserInput == false) {
-      return;
-    } else {
-      this.displayedColumns.push(delColumn.source.value);
-      this.deletedColumns = this.deletedColumns.filter((c) => {
-        return c != delColumn.source.value;
-      });
-    }
-  }
-
   changeCollection() {
     this.tableService.setCollectionName(this.collectionName);
     this.ngOnInit();
@@ -93,6 +83,22 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
   /* PopUp Menu */
 
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: "0px", y: "0px" };
+
+  onContextMenu({ x, y }: MouseEvent, column) {
+    this.close();
+    this.contextMenuPosition.x = x + "px";
+    this.contextMenuPosition.y = y + "px";
+    //this.contextMenuPosition.y = event.clientY + "px";
+    this.contextMenu.menuData = { column };
+    this.contextMenu.menu.focusFirstItem("mouse");
+    this.contextMenu.openMenu();
+  }
+
+  /*
   open({ x, y }: MouseEvent, column) {
     this.close();
     const positionStrategy = this.overlay
@@ -130,15 +136,25 @@ export class DataTableComponent implements OnInit, AfterViewInit {
         take(1)
       )
       .subscribe(() => this.close());
-  }
+  }*/
 
   delete(column) {
     this.displayedColumns = this.displayedColumns.filter((c) => {
       return c != column;
     });
     this.deletedColumns.push(column);
-
     this.close();
+  }
+
+  addColumn(delColumn) {
+    if (delColumn.isUserInput == false) {
+      return;
+    } else {
+      this.displayedColumns.push(delColumn);
+      this.deletedColumns = this.deletedColumns.filter((c) => {
+        return c != delColumn;
+      });
+    }
   }
 
   close() {

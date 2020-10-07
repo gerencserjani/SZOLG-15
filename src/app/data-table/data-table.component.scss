@@ -1,11 +1,5 @@
 @import "./src/assets/styles/material-theme.scss";
 
-.deleteButton {
-  padding-right: 3px;
-  padding-left: 3px;
-  --color-hover: red;
-}
-
 body {
   margin: 0px;
   padding: 0px;
@@ -14,14 +8,14 @@ body {
 ::ng-deep .mat-sort-header-arrow {
   color: blue;
 }
+/*Bigger header cell size, column text positioning*/
+.mat-sort-header {
+  padding: 7px;
 
-.options {
-  display: none;
+  #basicColumns {
+  }
 }
-.insert-column:hover .options {
-  display: block;
-  color: white;
-}
+
 .mat-option {
   font-size: 12px;
 }
@@ -80,143 +74,4 @@ body {
       text-align: center;
     }
   }
-}
-
-/* PopUp window styling*/
-
-.user-menu {
-  background-color: #fafafa;
-  padding: 4pt;
-  font-size: 10pt;
-  z-index: 1000;
-  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
-  border-radius: 4pt;
-  padding: 0.5em 0 0.5em 0;
-  animation: fadeIn 0.1s ease-out;
-  opacity: 1;
-  display: block;
-}
-
-.user-menu hr {
-  border: none;
-  border-bottom: 1px solid #eee;
-}
-
-.user-menu div {
-  cursor: pointer;
-  display: block;
-  text-decoration: none;
-  color: #333;
-  padding: 0.5em 2em 0.5em 0.75em;
-  max-width: 18em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-menu div:hover {
-  background-color: #333;
-  color: #fff;
-}
-
-.user-menu div::before {
-  content: "";
-  float: left;
-  margin-right: 0.75em;
-  width: 0.5em;
-  height: 1em;
-  display: inline-block;
-}
-
-/*Inside div of previous user menu*/
-.user-menu2 {
-  background-color: #fafafa;
-  padding: 4pt;
-  font-size: 10pt;
-  z-index: 1000;
-  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
-  border-radius: 4pt;
-  padding: 0.5em 0 0.5em 0;
-  animation: fadeIn 0.1s ease-out;
-  opacity: 1;
-  display: block;
-}
-
-.user-menu2 hr {
-  border: none;
-  border-bottom: 1px solid #eee;
-}
-
-.user-menu2 div {
-  cursor: pointer;
-  display: block;
-  text-decoration: none;
-  color: #333;
-  padding: 0.5em 2em 0.5em 0.75em;
-  max-width: 18em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-menu2 div:hover {
-  background-color: #333;
-  color: #fff;
-}
-
-.user-menu2 div::before {
-  content: "";
-  float: left;
-  display: inline-block;
-}
-
-/* Animatinons */
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.is-fadingIn {
-  -webkit-animation: fadeIn 0.1s ease-out;
-  animation: fadeIn 0.1s ease-out;
-  opacity: 1;
-  display: block;
-}
-
-.is-fadingOut {
-  -webkit-animation: fadeOut 0.1s ease-out;
-  animation: fadeOut 0.1s ease-out;
-  opacity: 0;
-  display: block;
 }
