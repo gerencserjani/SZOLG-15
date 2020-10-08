@@ -1,6 +1,14 @@
-import { Directive, OnInit, Renderer2, Input, ElementRef } from "@angular/core";
+import {
+  Directive,
+  OnInit,
+  Renderer2,
+  Input,
+  ElementRef,
+  ViewChild,
+} from "@angular/core";
 
 @Directive({
+  // tslint:disable-next-line: directive-selector
   selector: "[resizeColumn]",
 })
 export class ResizeColumnDirective implements OnInit {
@@ -25,8 +33,8 @@ export class ResizeColumnDirective implements OnInit {
   ngOnInit() {
     if (this.resizable) {
       const row = this.renderer.parentNode(this.column);
-      const thead = this.renderer.parentNode(row);
-      this.table = this.renderer.parentNode(thead);
+      const head = this.renderer.parentNode(row);
+      this.table = this.renderer.parentNode(head);
 
       const resizer = this.renderer.createElement("span");
       this.renderer.addClass(resizer, "resize-holder");
@@ -49,7 +57,7 @@ export class ResizeColumnDirective implements OnInit {
       this.renderer.addClass(this.table, "resizing");
 
       // Calculate width of column
-      let width = this.startWidth + (event.pageX - this.startX - offset);
+      const width = this.startWidth + (event.pageX - this.startX - offset);
 
       const tableCells = Array.from(
         this.table.querySelectorAll(".mat-row")

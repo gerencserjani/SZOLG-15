@@ -41,6 +41,7 @@ import { ContextMenuModule } from "@syncfusion/ej2-angular-navigations";
 import { enableRipple } from "@syncfusion/ej2-base";
 import { IgxDropDownModule } from "igniteui-angular";
 import { MatButtonModule } from "@angular/material/button";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 enableRipple(true);
 
 @NgModule({
@@ -59,6 +60,7 @@ enableRipple(true);
     MatToolbarModule,
     MatButtonModule,
     IgxDropDownModule,
+    ScrollingModule,
     ContextMenuModule,
     MatListModule,
     DragDropModule,

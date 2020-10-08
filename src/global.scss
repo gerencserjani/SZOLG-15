@@ -25,6 +25,7 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+/*Dark theme*/
 @import "~@angular/material/theming";
 @include mat-core();
 $app-primary: mat-palette($mat-blue, 900);

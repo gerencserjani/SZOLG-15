@@ -28,6 +28,8 @@ import {
 import { createCheckBox } from "@syncfusion/ej2-buttons";
 import { closest } from "@syncfusion/ej2-base";
 import { MatMenuTrigger } from "@angular/material/menu";
+import { CdkDragDrop, CdkDragStart, CdkDropList } from "@angular/cdk/drag-drop";
+import { moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: "app-data-table",
@@ -39,6 +41,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   storedTheme: string = localStorage.getItem("theme-color");
   tableData;
   public dataSource;
+
   displayedColumns: string[];
   columnTitles = [];
   deletedColumns = [];
@@ -48,6 +51,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   sub: Subscription;
   @ViewChild("userMenu") userMenu: TemplateRef<any>;
   overlayRef: OverlayRef | null;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: "0px", y: "0px" };
+  previousIndex: number;
 
   constructor(
     public tableService: TableServiceService,
@@ -57,8 +66,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {}
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+
   ngOnInit() {
     this.tableService.setCollectionName(this.collectionName);
     this.tableService.getData().subscribe((resData) => {
@@ -83,76 +91,31 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
   /* PopUp Menu */
 
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
-
-  contextMenuPosition = { x: "0px", y: "0px" };
-
   onContextMenu({ x, y }: MouseEvent, column) {
     this.close();
     this.contextMenuPosition.x = x + "px";
     this.contextMenuPosition.y = y + "px";
-    //this.contextMenuPosition.y = event.clientY + "px";
+    // this.contextMenuPosition.y = event.clientY + "px";
     this.contextMenu.menuData = { column };
     this.contextMenu.menu.focusFirstItem("mouse");
     this.contextMenu.openMenu();
   }
 
-  /*
-  open({ x, y }: MouseEvent, column) {
-    this.close();
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo({ x, y })
-      .withPositions([
-        {
-          originX: "end",
-          originY: "bottom",
-          overlayX: "end",
-          overlayY: "top",
-        },
-      ]);
-
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.close(),
-    });
-
-    this.overlayRef.attach(
-      new TemplatePortal(this.userMenu, this.viewContainerRef, {
-        $implicit: column,
-      })
-    );
-
-    this.sub = fromEvent<MouseEvent>(document, "click")
-      .pipe(
-        filter((event) => {
-          const clickTarget = event.target as HTMLElement;
-          return (
-            !!this.overlayRef &&
-            !this.overlayRef.overlayElement.contains(clickTarget)
-          );
-        }),
-        take(1)
-      )
-      .subscribe(() => this.close());
-  }*/
-
   delete(column) {
     this.displayedColumns = this.displayedColumns.filter((c) => {
-      return c != column;
+      return c !== column;
     });
     this.deletedColumns.push(column);
     this.close();
   }
 
   addColumn(delColumn) {
-    if (delColumn.isUserInput == false) {
+    if (delColumn.isUserInput === false) {
       return;
     } else {
       this.displayedColumns.push(delColumn);
       this.deletedColumns = this.deletedColumns.filter((c) => {
-        return c != delColumn;
+        return c !== delColumn;
       });
     }
   }
@@ -163,5 +126,16 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+  }
+  tableDrop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      this.displayedColumns,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  resetView() {
+    this.ngOnInit();
   }
 }
