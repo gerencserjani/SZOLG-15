@@ -77,6 +77,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
     });
     this.isThemeDark = this.themeService.isThemeDark;
+    //this.getCellValue();
   }
 
   changeCollection() {
@@ -102,11 +103,13 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   delete(column) {
-    this.displayedColumns = this.displayedColumns.filter((c) => {
-      return c !== column;
-    });
-    this.deletedColumns.push(column);
     this.close();
+    setTimeout(() => {
+      this.displayedColumns = this.displayedColumns.filter((c) => {
+        return c !== column;
+      });
+    }, 200);
+    this.deletedColumns.push(column);
   }
 
   addColumn(delColumn) {
@@ -138,4 +141,6 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   resetView() {
     this.ngOnInit();
   }
+
+  
 }

@@ -16,11 +16,12 @@
       <ng-container
         *ngFor="let column of displayedColumns; let i = index"
         [matColumnDef]="column"
+        
       >
         <mat-header-cell
           *matHeaderCellDef
           [resizeColumn]="true"
-          [index]="i"
+        [index]="i"
           (contextmenu)="onContextMenu($event, column); $event.preventDefault()"
         >
           <mat-label id="sort-icon" mat-sort-header cdkDrag cdkDragLockAxis="x">
@@ -30,7 +31,7 @@
         <mat-cell *matCellDef="let element">{{ element[column] }}</mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-header-row  *matHeaderRowDef="displayedColumns"></mat-header-row >
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
@@ -83,6 +84,6 @@
         <ion-button (click)="changeCollection()">Change collection</ion-button>
       </ion-item>
     </ion-list>
-    <button mat-button (click)="resetView()" color="primary">Reset View</button>
+    <button mat-button (click)="resetView()">Reset View</button>
   </div>
 </ion-content>
